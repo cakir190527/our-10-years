@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Our First 10 Years</title>
+  <style>
+    :root{
+      --paper:#f2f0df;
+      --paper-dark:#d4cfaa;
+      --ink:#363823;
+      --wine:#777847;
+      --bg1:#17190e;
+      --bg2:#45492b;
+      --shadow:rgba(0,0,0,.35);
+    }
+
+    *{box-sizing:border-box}
+    html,body{margin:0;min-height:100%;font-family:Georgia, "Times New Roman", serif;background:
+      radial-gradient(circle at top,#3a2b22 0%,var(--bg2) 35%,var(--bg1) 100%);
+      color:#fff;
+    }
+
+    body{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow-x:hidden;
+      padding:28px 16px;
+    }
+
+    .app{
+      width:min(980px,100%);
+      text-align:center;
+    }
+
+    .eyebrow{
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      font-size:.8rem;
+      opacity:.72;
+      margin-bottom:8px;
+    }
+
+    h1{
+      margin:0;
+      font-weight:500;
+      font-size:clamp(2rem,6vw,4rem);
+    }
+
+    .route{
+      margin:10px 0 26px;
+      opacity:.82;
+      font-size:clamp(.95rem,2.5vw,1.15rem);
+    }
+
+    .year-tabs{
+      display:flex;
+      gap:8px;
+      overflow-x:visible;
+      flex-wrap:wrap;
+      padding:4px 4px 14px;
+      scrollbar-width:thin;
+      justify-content:center;
+      margin:0 auto 8px;
+      max-width:100%;
+    }
+
+    .year-btn{
+      flex:0 0 auto;
+      border:1px solid rgba(255,255,255,.18);
+      color:#fff;
+      background:rgba(255,255,255,.07);
+      border-radius:999px;
+      padding:9px 14px;
+      cursor:pointer;
+      transition:.2s ease;
+      font:inherit;
+    }
+
+    .year-btn:hover,.year-btn.active{
+      background:rgba(255,255,255,.18);
+      transform:translateY(-1px);
+    }
+
+    .stage{
+      position:relative;
+      width:min(520px,92vw);
+      height:min(410px,82vw);
+      max-height:410px;
+      margin:0 auto;
+      perspective:1400px;
+    }
+
+    .envelope{
+      position:absolute;
+      left:50%;
+      bottom:72px;
+      transform:translateX(-50%);
+      width:100%;
+      height:64%;
+      filter:drop-shadow(0 22px 20px var(--shadow));
+      cursor:pointer;
+      transition:bottom .75s cubic-bezier(.2,.72,.2,1);
+      overflow:visible;
+    }
+
+    .back{
+      position:absolute;
+      inset:0;
+      background:linear-gradient(145deg,#ead7b5,#cfb486);
+      border-radius:10px;
+      overflow:hidden;
+    }
+
+    .inner-mouth{
+      position:absolute;
+      left:6%;
+      right:6%;
+      top:9%;
+      height:46%;
+      background:linear-gradient(180deg,#8f765a,#b69a76);
+      clip-path:polygon(0 0,100% 0,50% 100%);
+      z-index:2;
+      opacity:.98;
+      pointer-events:none;
+    }
+
+
+    .back::before,
+    .back::after{
+      content:"";
+      position:absolute;
+      bottom:0;
+      width:55%;
+      height:100%;
+      background:#d7bf96;
+      z-index:2;
+    }
+
+    .back::before{
+      left:0;
+      clip-path:polygon(0 0,100% 52%,0 100%);
+    }
+
+    .back::after{
+      right:0;
+      clip-path:polygon(100% 0,0 52%,100% 100%);
+    }
+
+    .front{
+      position:absolute;
+      inset:0;
+      background:linear-gradient(180deg,#ddc7a0,#ccb082);
+      clip-path:polygon(0 50%,50% 78%,100% 50%,100% 100%,0 100%);
+      z-index:5;
+      border-radius:0 0 10px 10px;
+      pointer-events:none;
+    }
+
+    .flap{
+      position:absolute;
+      inset:0 0 auto 0;
+      height:58%;
+      background:linear-gradient(180deg,#eedcbb,#d6ba8b);
+      clip-path:polygon(0 0,100% 0,50% 100%);
+      transform-origin:top center;
+      transform:rotateX(0deg);
+      transition:
+        transform .72s cubic-bezier(.2,.72,.2,1),
+        z-index 0s linear .38s;
+      z-index:8;
+      backface-visibility:hidden;
+      border-radius:10px 10px 0 0;
+      box-shadow:0 2px 0 rgba(255,255,255,.08) inset;
+    }
+
+    .letter{
+      position:absolute;
+      width:86%;
+      height:112%;
+      left:7%;
+      bottom:-7%;
+      background:var(--paper);
+      color:#fff;
+      border-radius:8px 8px 4px 4px;
+      z-index:4;
+      transform:translateY(50%);
+      opacity:0;
+      visibility:hidden;
+      transition:
+        transform .92s cubic-bezier(.18,.72,.2,1) .62s,
+        opacity .18s ease .58s,
+        visibility 0s linear .58s;
+      box-shadow:0 10px 20px rgba(0,0,0,.16);
+      padding:0;
+      overflow:hidden;
+      text-align:left;
+    }
+
+    .letter::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(180deg,rgba(0,0,0,.10) 0%,rgba(0,0,0,.28) 48%,rgba(0,0,0,.72) 100%),
+        var(--letter-image, linear-gradient(135deg,#b9aa94,#6d5a4c));
+      background-size:cover;
+      background-position:center;
+      z-index:0;
+      transition:background-image .25s ease;
+    }
+
+    .letter-content{
+      position:relative;
+      z-index:2;
+      min-height:100%;
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-end;
+      padding:28px 24px 24px;
+      text-shadow:0 2px 8px rgba(0,0,0,.55);
+    }
+
+    .letter.openable{
+      cursor:default;
+    }
+
+
+    .envelope.open{
+      bottom:8px;
+    }
+
+    .envelope.open .flap{
+      transform:rotateX(178deg);
+      z-index:1;
+    }
+
+    .envelope.open .letter{
+      transform:translateY(-48%);
+      z-index:9;
+      opacity:1;
+      visibility:visible;
+      transition:
+        transform .92s cubic-bezier(.18,.72,.2,1) .62s,
+        opacity .18s ease .58s,
+        visibility 0s linear .58s,
+        z-index 0s linear 1.05s;
+    }
+
+    .seal{
+      position:absolute;
+      left:50%;
+      top:41%;
+      transform:translate(-50%,-50%);
+      width:74px;
+      height:74px;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      background:
+        radial-gradient(circle at 35% 30%,#a53b48 0%,#7f1f2d 38%,#5d111d 100%);
+      color:#f4d9c8;
+      border:3px solid rgba(255,255,255,.12);
+      box-shadow:0 8px 14px rgba(0,0,0,.25), inset 0 0 12px rgba(255,255,255,.12);
+      z-index:10;
+      transition:transform .35s ease,opacity .35s ease;
+      font-size:1.4rem;
+      font-weight:bold;
+      letter-spacing:.04em;
+    }
+
+    .envelope.open .seal{
+      transform:translate(-50%,-50%) scale(.72) rotate(-10deg);
+      opacity:0;
+      pointer-events:none;
+      transition:transform .28s ease, opacity .22s ease;
+    }
+
+    .letter h2{
+      margin:0;
+      font-size:2rem;
+      font-weight:500;
+      color:#fff;
+    }
+
+    .location{
+      margin:4px 0 14px;
+      font-size:.94rem;
+      text-transform:uppercase;
+      letter-spacing:.14em;
+      opacity:.82;
+      color:#fff;
+    }
+
+
+
+    .message{
+      margin:0;
+      line-height:1.55;
+      font-size:1.03rem;
+      color:#fff;
+      max-width:95%;
+    }
+
+    .tap{
+      margin:18px 0 0;
+      opacity:.72;
+      font-size:.92rem;
+    }
+
+    .nav{
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      margin-top:22px;
+    }
+
+    .nav button{
+      border:1px solid rgba(255,255,255,.18);
+      background:rgba(255,255,255,.08);
+      color:#fff;
+      padding:10px 18px;
+      border-radius:999px;
+      cursor:pointer;
+      font:inherit;
+    }
+
+    .nav button:hover{background:rgba(255,255,255,.16)}
+    .nav button:disabled{opacity:.35;cursor:not-allowed}
+
+    .hint{
+      margin-top:14px;
+      opacity:.55;
+      font-size:.82rem;
+    }
+
+    @media(max-width:560px){
+      body{padding-top:18px;align-items:flex-start}
+      .stage{height:390px}
+      .envelope{bottom:66px}
+      .envelope.open{bottom:8px}
+      .letter{padding:0}
+      .envelope.open .letter{transform:translateY(-44%);z-index:9;opacity:1;visibility:visible}
+    }
+  
+.interactive-zone{width:min(760px,94vw);margin:8px auto 18px;min-height:120px}
+.interactive-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:20px;padding:20px;box-shadow:0 18px 40px rgba(0,0,0,.18);backdrop-filter:blur(8px)}
+.interactive-title{margin:0 0 8px;font-size:1.15rem;font-weight:500}.interactive-sub{opacity:.68;margin-bottom:14px;font-size:.9rem}
+.demo-btn{font:inherit;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.1);color:#fff;border-radius:999px;padding:9px 16px;cursor:pointer}.demo-btn:hover{background:rgba(255,255,255,.16)}
+.mini-heart{font-size:86px;display:inline-block;cursor:pointer;user-select:none;transition:.22s;filter:drop-shadow(0 10px 15px rgba(0,0,0,.22))}
+.heart-word{min-height:30px;margin-top:8px;font-size:1.05rem}.mini-progress{width:min(420px,90%);height:7px;background:rgba(255,255,255,.12);border-radius:999px;overflow:hidden;margin:12px auto 0}.mini-progress-fill{height:100%;width:0;background:#d5cf9e;transition:.2s}
+.heart-grid{display:grid;grid-template-columns:repeat(5,54px);gap:8px;justify-content:center}.heart-piece{height:54px;border-radius:12px;background:rgba(255,255,255,.08);display:grid;place-items:center;font-size:30px;cursor:pointer;transition:.2s}.heart-piece.on{background:rgba(213,207,158,.2);transform:scale(1.05)}
+.memory-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.memory-object{padding:18px 10px;border-radius:14px;background:rgba(255,255,255,.07);font-size:32px;cursor:pointer;transition:.2s}.memory-object:hover{transform:translateY(-3px)}.memory-label{font-size:.76rem;opacity:.68;margin-top:5px}.memory-output{margin-top:12px;min-height:32px}
+.route-stage{height:170px;position:relative;border-radius:14px;background:rgba(255,255,255,.04);overflow:hidden}.route-base{position:absolute;left:8%;right:8%;top:50%;height:4px;background:rgba(255,255,255,.12)}.route-fill{height:100%;width:0;background:#d5cf9e;transition:width 4.2s linear}.route-stop{position:absolute;top:calc(50% - 8px);width:16px;height:16px;border-radius:50%;background:#d5cf9e;opacity:.35;transform:scale(.5);transition:.3s}.route-labels{display:flex;justify-content:space-between;gap:6px;margin-top:8px;font-size:.72rem;opacity:.7}
+.hold-box{height:180px;position:relative;border-radius:14px;overflow:hidden;background:linear-gradient(135deg,#3d4328,#767d4d)}.hold-secret,.hold-cover{position:absolute;inset:0;display:grid;place-items:center;padding:20px}.hold-secret{font-size:1.2rem}.hold-cover{background:linear-gradient(135deg,#7c8158,#505637);clip-path:inset(0 0 0 0)}
+.scratch-box{position:relative;height:180px;border-radius:14px;overflow:hidden}.scratch-secret{position:absolute;inset:0;display:grid;place-items:center;padding:20px;background:linear-gradient(135deg,#6b7348,#343a23);font-size:1.15rem}.scratch-box canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none}
+.tree-stage{height:220px;position:relative;display:grid;place-items:end center}.tree-trunk{width:16px;height:52px;background:#89724e;border-radius:10px 10px 0 0}.tree-branch{position:absolute;width:5px;background:#89724e;bottom:48px;left:50%;transform-origin:bottom;opacity:0;transition:.3s}.tree-leaf{position:absolute;font-size:22px;opacity:0;transform:scale(.2);transition:.3s}.tree-leaf.show{opacity:1;transform:scale(1)}
+.final-lock{font-size:64px;margin:4px 0 10px}.token-row{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}.token{width:52px;height:52px;border-radius:14px;background:rgba(255,255,255,.08);display:grid;place-items:center;font-size:26px;cursor:pointer;transition:.2s}.token.on{background:rgba(213,207,158,.2);transform:translateY(-3px)}.count-num{font-size:78px;line-height:1;margin:10px 0}.count-memory{min-height:28px}
+.future-overlay{position:fixed;inset:0;z-index:120;background:rgba(8,10,7,.86);backdrop-filter:blur(10px);display:grid;place-items:center;padding:20px;opacity:0;visibility:hidden;transition:.3s}.future-overlay.show{opacity:1;visibility:visible}.future-card{width:min(420px,90vw);background:linear-gradient(145deg,#6a6641,#444127);border:1px solid rgba(255,255,255,.14);border-radius:20px;padding:34px 24px;text-align:center;box-shadow:0 28px 60px rgba(0,0,0,.42)}.future-seal{width:70px;height:70px;border-radius:50%;margin:0 auto 14px;display:grid;place-items:center;background:radial-gradient(circle at 35% 30%,#ad9251,#745e2c 60%,#473613);font-weight:bold}
+@media(max-width:600px){.memory-grid{grid-template-columns:repeat(2,1fr)}.heart-grid{grid-template-columns:repeat(5,46px)}.heart-piece{height:46px}}
+
+
+.real-map-wrap{
+  height:320px;
+  border-radius:16px;
+  overflow:hidden;
+  margin-top:10px;
+  border:1px solid rgba(255,255,255,.12);
+}
+.real-map-wrap .leaflet-container{font-family:Georgia,"Times New Roman",serif}
+.real-map-wrap .leaflet-popup-content-wrapper,
+.real-map-wrap .leaflet-popup-tip{background:#303520;color:#fff}
+.real-map-pin{
+  width:24px;height:24px;border-radius:50%;
+  background:#777847;border:3px solid #efe9c9;
+  box-shadow:0 0 0 5px rgba(119,120,71,.22),0 6px 14px rgba(0,0,0,.25)
+}
+.map-status{margin-top:10px;min-height:26px;font-size:.95rem}
+@media(max-width:600px){.real-map-wrap{height:280px}}
+
+
+.selected-experience{width:min(820px,95vw);margin:16px auto 24px}
+.selected-card{position:relative;overflow:hidden;border-radius:20px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);box-shadow:0 20px 45px rgba(0,0,0,.2)}
+.selected-head{padding:15px 18px;text-align:left;border-bottom:1px solid rgba(255,255,255,.1)}
+.selected-head strong{font-weight:500;font-size:1.1rem}.selected-head span{display:block;opacity:.62;font-size:.84rem;margin-top:3px}
+
+/* Living Photograph */
+.living-scene{height:360px;position:relative;background:url('images/kansas-city-home.jpg') center/cover,linear-gradient(135deg,#8790a0,#45513a);overflow:hidden}
+.living-night{position:absolute;inset:0;background:linear-gradient(#071328cc,#0a1020aa),url('images/kansas-city-home.jpg') center/cover;opacity:0}
+.living-sun{position:absolute;width:64px;height:64px;border-radius:50%;background:#ffe29b;box-shadow:0 0 48px #ffd982;left:10%;top:12%}
+.living-moon{position:absolute;width:46px;height:46px;border-radius:50%;background:#e8edf1;box-shadow:0 0 30px #dce8ff;right:12%;top:14%;opacity:0}
+.living-lights{position:absolute;inset:0;opacity:0;background:radial-gradient(circle at 65% 64%,#ffd873 0 3px,transparent 5px),radial-gradient(circle at 71% 61%,#ffd873 0 3px,transparent 5px),radial-gradient(circle at 78% 68%,#ffd873 0 3px,transparent 5px)}
+.living-copy{position:absolute;left:22px;bottom:20px;font-size:1.35rem;text-shadow:0 3px 16px #000}.living-time{position:absolute;right:18px;bottom:18px;padding:7px 11px;background:#0007;border-radius:999px}
+
+/* Boarding passes */
+.pass-desk{height:370px;position:relative;background:linear-gradient(145deg,#5a4934,#2e251b)}
+.pass-stack{position:absolute;left:50%;top:47%;transform:translate(-50%,-50%);width:min(650px,84%);height:210px}
+.board-pass{position:absolute;inset:0;background:#eee5cf;color:#25231d;border-radius:11px;box-shadow:0 14px 30px #0007;display:grid;grid-template-columns:1fr 130px;transition:.5s cubic-bezier(.2,.8,.2,1);cursor:pointer;overflow:hidden}
+.board-pass .main{padding:24px;text-align:left}.board-pass .stub{border-left:2px dashed #a9a08b;padding:22px 14px;display:grid;place-items:center;text-align:center}
+.board-pass .route{font:700 clamp(1.25rem,3vw,2rem) Arial;margin:12px 0}.board-pass .meta{font:11px Arial;letter-spacing:.1em;text-transform:uppercase;opacity:.62;line-height:1.7}
+.board-pass.gone{transform:translateX(125%) rotate(9deg)!important;opacity:0}.pass-caption{position:absolute;left:0;right:0;bottom:16px;text-align:center}
+
+/* Film negative viewer */
+.negative-viewer{height:390px;position:relative;background:#12130d;overflow:hidden}
+.negative-lightbox{position:absolute;left:50%;top:7%;transform:translateX(-50%);width:58%;height:56%;background:#eee3c8;box-shadow:0 0 55px #f4dca755;overflow:hidden}
+.negative-hero{position:absolute;inset:14px;background:center/cover;transition:.3s}.negative-hero:after{content:'';position:absolute;inset:0;background:linear-gradient(#0000,#0007)}
+.negative-title{position:absolute;left:18px;bottom:16px;z-index:2;font-size:1.25rem;text-shadow:0 3px 14px #000}
+.negative-film{position:absolute;left:0;bottom:8%;height:92px;display:flex;gap:14px;padding:12px 45vw;background:#171712;border-top:8px dashed #d6cfa1;border-bottom:8px dashed #d6cfa1;cursor:grab;transition:transform .3s}
+.negative-frame{flex:0 0 125px;height:60px;background:#4d4d3d center/cover;border:2px solid #c9c19a;filter:sepia(1) invert(.12) contrast(1.25);opacity:.72}
+.negative-frame.active{filter:none;opacity:1;box-shadow:0 0 20px #f6df9b}
+
+/* Last Page */
+.last-stage{height:450px;display:grid;place-items:center;perspective:1600px;background:radial-gradient(circle,#3c4027,#17190f 72%)}
+.last-book{width:min(700px,88%);height:340px;display:grid;grid-template-columns:1fr 1fr;filter:drop-shadow(0 22px 28px #0008)}
+.last-page{position:relative;background:#eee6d2;color:#2e2a22;padding:30px;overflow:hidden}.last-left{border-radius:12px 0 0 12px;border-right:1px solid #bdb39d}.last-right{border-radius:0 12px 12px 0;perspective:1400px}
+.last-turn{position:absolute;inset:0;z-index:5;background:linear-gradient(90deg,#d8ceb7,#f5eddc);transform-origin:left center;transition:1.15s cubic-bezier(.18,.78,.18,1);cursor:pointer;backface-visibility:hidden}
+.last-turn:before{content:"THE END";position:absolute;left:0;right:0;top:43%;text-align:center;font-size:2rem;letter-spacing:.14em}.last-turn:after{content:"Turn the page →";position:absolute;right:20px;bottom:18px;font-size:.8rem;opacity:.55}
+.last-right.open .last-turn{transform:rotateY(-179deg)}
+.last-ink{font-size:1.6rem;line-height:1.35;opacity:0;filter:blur(8px);transition:1.8s ease}.last-ink.show{opacity:1;filter:none}
+.last-future{margin-top:24px;opacity:0;transition:1s ease 1.5s}.last-future.show{opacity:.66}
+.last-seal{position:absolute;right:24px;bottom:22px;width:54px;height:54px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 30%,#8d824e,#56522f 62%,#36351e);color:#eee7cf;font-size:.72rem;opacity:0;transition:.6s 2.1s}.last-seal.show{opacity:1}
+
+@media(max-width:650px){
+ .board-pass{grid-template-columns:1fr 95px}.board-pass .main{padding:17px}.board-pass .stub{padding:14px 8px}
+ .negative-lightbox{width:78%}
+ .last-book{grid-template-columns:34% 66%}.last-page{padding:18px}.last-ink{font-size:1.25rem}
+}
+
+
+/* realistic boarding pass upgrade */
+.pass-desk{
+  height:410px;
+  background:
+    radial-gradient(circle at 18% 15%,rgba(255,255,255,.06),transparent 28%),
+    linear-gradient(145deg,#5d4a35,#30251a);
+}
+.pass-stack{width:min(720px,88%);height:235px}
+.board-pass{
+  grid-template-columns:1fr 176px;
+  background:
+    radial-gradient(circle at 0 50%,transparent 0 10px,#f3eddf 11px),
+    radial-gradient(circle at 100% 50%,transparent 0 10px,#f3eddf 11px),
+    linear-gradient(180deg,#f7f2e7,#ebe2cf);
+  color:#24241f;
+  border-radius:9px;
+  border:1px solid #d6cbb6;
+  box-shadow:0 16px 34px rgba(0,0,0,.38);
+}
+.board-pass .main{padding:19px 24px 17px;position:relative}
+.board-pass .stub{
+  position:relative;
+  border-left:2px dashed #aaa18e;
+  padding:18px 13px;
+  background:rgba(220,211,192,.28)
+}
+.airline-row{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #cfc5b1;padding-bottom:8px}
+.airline-name{font:700 13px Arial,sans-serif;letter-spacing:.17em}
+.ticket-class{font:10px Arial,sans-serif;letter-spacing:.12em;color:#686255}
+.flight-route{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;margin:14px 0 12px}
+.airport-code{font:700 clamp(1.8rem,4vw,2.7rem) Arial,sans-serif;letter-spacing:.04em}
+.airport-name{font:10px Arial,sans-serif;text-transform:uppercase;letter-spacing:.08em;color:#777063;margin-top:2px}
+.destination{text-align:right}
+.flight-plane{font:22px Arial;color:#696345;position:relative}
+.flight-plane:before,.flight-plane:after{content:"";position:absolute;top:50%;width:34px;border-top:1px dashed #aaa18e}
+.flight-plane:before{right:26px}.flight-plane:after{left:26px}
+.ticket-details{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;border-top:1px solid #d4cab7;padding-top:10px}
+.detail-label{display:block;font:9px Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#8a8274;margin-bottom:3px}
+.detail-value{font:700 12px Arial,sans-serif;color:#34332d}
+.stub-title{font:700 11px Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase}
+.stub-code{font:700 25px Arial,sans-serif;margin:7px 0}
+.barcode{width:100%;height:42px;margin:9px 0;background:repeating-linear-gradient(90deg,#24241f 0 2px,transparent 2px 4px,#24241f 4px 5px,transparent 5px 8px,#24241f 8px 11px,transparent 11px 13px)}
+.stub-small{font:9px Arial,sans-serif;line-height:1.5;text-transform:uppercase;color:#706a5e}
+.board-pass.next-pass{background:linear-gradient(180deg,#303421,#202317);color:#f1ecd9;border-color:#686b48}
+.board-pass.next-pass .stub{background:#ffffff08;border-left-color:#ffffff35}
+.board-pass.next-pass .airline-row,.board-pass.next-pass .ticket-details{border-color:#ffffff25}
+.board-pass.next-pass .airport-name,.board-pass.next-pass .ticket-class,.board-pass.next-pass .detail-label,.board-pass.next-pass .stub-small{color:#c8c5ad}
+.board-pass.next-pass .detail-value,.board-pass.next-pass .flight-plane{color:#f1ecd9}
+.board-pass.next-pass .barcode{background:repeating-linear-gradient(90deg,#eee8d5 0 2px,transparent 2px 4px,#eee8d5 4px 5px,transparent 5px 8px,#eee8d5 8px 11px,transparent 11px 13px)}
+@media(max-width:650px){
+ .pass-stack{width:94%;height:225px}
+ .board-pass{grid-template-columns:1fr 112px}
+ .board-pass .main{padding:15px 14px}
+ .board-pass .stub{padding:14px 8px}
+ .ticket-details{grid-template-columns:repeat(2,1fr);gap:7px}
+ .airport-code{font-size:1.65rem}
+ .flight-plane:before,.flight-plane:after{width:17px}
+}
+
+
+
+/* Year Eight — refined family heart */
+.family-heart-scene{
+  min-height:410px;
+  position:relative;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 50% 45%,rgba(154,37,48,.15),transparent 28%),
+    radial-gradient(circle at 50% 100%,rgba(214,207,158,.08),transparent 44%),
+    linear-gradient(180deg,rgba(255,255,255,.02),rgba(0,0,0,.08));
+}
+.family-heart-wrap{
+  position:relative;
+  width:320px;
+  height:300px;
+  display:grid;
+  place-items:center;
+  cursor:pointer;
+  user-select:none;
+}
+.family-heart-svg{
+  position:absolute;
+  width:190px;
+  height:190px;
+  overflow:visible;
+  filter:drop-shadow(0 18px 30px rgba(0,0,0,.28));
+  animation:familyBeat 1.5s ease-in-out infinite;
+  transition:transform .55s ease;
+}
+.family-heart-svg path{
+  fill:url(#bigHeartGradient);
+  stroke:rgba(255,255,255,.10);
+  stroke-width:1.1;
+}
+@keyframes familyBeat{
+  0%,100%{transform:scale(1)}
+  8%{transform:scale(1.055)}
+  16%{transform:scale(1)}
+  24%{transform:scale(1.035)}
+  34%{transform:scale(1)}
+}
+.family-heart-scene.revealed .family-heart-svg{
+  animation:bigHeartSettle 1.2s cubic-bezier(.18,.85,.2,1) forwards, familyBeat 1.5s ease-in-out 1.25s infinite;
+}
+@keyframes bigHeartSettle{
+  0%{transform:scale(1)}
+  45%{transform:scale(1.10)}
+  100%{transform:scale(1.04)}
+}
+.small-heart-svg{
+  position:absolute;
+  width:78px;
+  height:78px;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-35%) scale(.1);
+  opacity:0;
+  z-index:6;
+  filter:drop-shadow(0 10px 18px rgba(0,0,0,.22));
+}
+.small-heart-svg path{
+  fill:url(#smallHeartGradient);
+  stroke:rgba(255,255,255,.12);
+  stroke-width:1.1;
+}
+.family-heart-scene.revealed .small-heart-svg{
+  animation:littleHeartArrives 1.28s cubic-bezier(.16,.86,.2,1.18) .25s forwards,
+            smallBeat 1.2s ease-in-out 1.7s infinite;
+}
+@keyframes littleHeartArrives{
+  0%{opacity:0;transform:translate(-50%,-10%) scale(.12)}
+  58%{opacity:1;transform:translate(-50%,-104%) scale(1.12)}
+  100%{opacity:1;transform:translate(-50%,-92%) scale(1)}
+}
+@keyframes smallBeat{
+  0%,100%{transform:translate(-50%,-92%) scale(1)}
+  12%{transform:translate(-50%,-92%) scale(1.10)}
+  24%{transform:translate(-50%,-92%) scale(1)}
+}
+.heart-ring{
+  position:absolute;width:220px;height:220px;border:1px solid rgba(225,207,160,.22);border-radius:50%;
+  opacity:0;transform:scale(.65);pointer-events:none;
+}
+.family-heart-scene.revealed .heart-ring{animation:ringOut 1.7s ease-out forwards}
+@keyframes ringOut{0%{opacity:.65;transform:scale(.65)}100%{opacity:0;transform:scale(1.6)}}
+.family-copy{
+  position:absolute;left:18px;right:18px;bottom:22px;text-align:center;
+}
+.family-copy .before{opacity:.62;font-size:.9rem;letter-spacing:.08em;text-transform:uppercase}
+.family-copy .after{font-size:1.35rem;margin-top:6px;opacity:0;transform:translateY(8px);transition:.8s ease 1.15s}
+.family-heart-scene.revealed .after{opacity:1;transform:none}
+.family-year{
+  position:absolute;top:22px;left:0;right:0;text-align:center;
+  font-size:.78rem;letter-spacing:.17em;text-transform:uppercase;opacity:.55
+}
+.heartbeat-line{
+  position:absolute;left:10%;right:10%;top:50%;height:80px;opacity:.15;pointer-events:none;
+}
+.heartbeat-line svg{width:100%;height:100%}
+.heartbeat-line path{stroke:#e5d7ae;stroke-width:2;fill:none;stroke-dasharray:900;stroke-dashoffset:900}
+.family-heart-scene.revealed .heartbeat-line path{animation:drawBeat 2.1s ease forwards}
+@keyframes drawBeat{to{stroke-dashoffset:0}}
+
+
+
+/* I Do — wedding photo reveal */
+.wedding-reveal{
+  min-height:390px;position:relative;overflow:hidden;
+  background:radial-gradient(circle at 18% 12%,rgba(176,28,22,.32),transparent 30%),linear-gradient(#2c1110,#120b0b 65%);
+}
+.wedding-paper{
+  position:absolute;left:50%;top:48%;transform:translate(-50%,-50%) rotate(-1.5deg);
+  width:min(620px,82%);aspect-ratio:4/3;background:#e6e0cf;
+  box-shadow:0 20px 45px rgba(0,0,0,.5);overflow:hidden;
+}
+.wedding-photo{
+  position:absolute;inset:0;background:center/cover;
+  filter:sepia(.75) contrast(.85) brightness(.82);opacity:.14;transition:.12s;
+}
+.wedding-light{
+  position:absolute;width:165px;height:165px;border-radius:50%;pointer-events:none;
+  transform:translate(-50%,-50%);
+  background:radial-gradient(circle,rgba(255,245,215,.92) 0 22%,rgba(255,214,170,.38) 40%,transparent 68%);
+  mix-blend-mode:screen;
+}
+.wedding-caption{position:absolute;left:0;right:0;bottom:14px;text-align:center;font-size:.9rem;opacity:.7}
+
+/* Newlyweds — 3D passport */
+.passport-stage{
+  min-height:430px;display:grid;place-items:center;perspective:1600px;
+  background:radial-gradient(circle,#3b4026,#171a10 72%);
+}
+.passport-book{
+  position:relative;width:min(680px,86vw);height:360px;transform-style:preserve-3d;
+}
+.passport-cover,.passport-page{
+  position:absolute;inset:0;border-radius:12px;transform-origin:left center;
+  backface-visibility:hidden;box-shadow:0 22px 48px rgba(0,0,0,.5);
+}
+.passport-cover{
+  background:linear-gradient(145deg,#3c2a20,#21160f);z-index:5;
+  display:grid;place-items:center;border:1px solid rgba(255,255,255,.12);cursor:pointer;
+}
+.passport-cover:before{
+  content:"PASSPORT";position:absolute;top:18%;letter-spacing:.18em;
+  font:700 18px Arial,sans-serif;color:#d7bd80;
+}
+.passport-emblem{font-size:62px;color:#d7bd80}
+.passport-hint{position:absolute;bottom:14%;opacity:.62}
+.passport-book.open .passport-cover{transform:rotateY(-168deg);transition:1s cubic-bezier(.2,.8,.2,1)}
+.passport-page{
+  background:linear-gradient(180deg,#efe7d0,#d8cdb4);color:#373126;
+  display:grid;grid-template-columns:1fr 1fr;z-index:3;overflow:hidden;
+}
+.passport-left,.passport-right{padding:26px;position:relative}
+.passport-left{border-right:1px solid rgba(0,0,0,.12)}
+.passport-photo{height:60%;border-radius:9px;background:center/cover;border:1px solid rgba(0,0,0,.16)}
+.passport-meta{font:11px Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;opacity:.72;margin-top:12px;line-height:1.55}
+.passport-quote{font-size:1.28rem;line-height:1.45;margin-top:18%}
+.passport-stamp{
+  position:absolute;right:26px;bottom:24px;width:130px;height:130px;border-radius:50%;
+  border:5px double #7e3c3c;color:#7e3c3c;display:grid;place-items:center;text-align:center;
+  font:700 15px Arial,sans-serif;transform:rotate(-12deg) scale(.2);opacity:0;
+}
+.passport-book.stamped .passport-stamp{animation:passportStamp .45s cubic-bezier(.15,.9,.2,1.25) forwards}
+@keyframes passportStamp{to{transform:rotate(-12deg) scale(1);opacity:.72}}
+.passport-controls{position:absolute;left:0;right:0;bottom:14px;display:flex;justify-content:center;gap:10px;z-index:8}
+@media(max-width:650px){
+  .passport-book{height:390px}
+  .passport-page{grid-template-columns:1fr}
+  .passport-right{display:none}
+}
+
+</style>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+</head>
+<body>
+  <main class="app">
+    <div class="eyebrow">5 Places • 10 Years • One Growing Story</div>
+    <h1>Our First 10 Years</h1>
+    <div class="route">Cambodia → İzmir → Myanmar → Laos → Cambodia → Kansas City</div>
+
+    <div class="year-tabs" id="yearTabs"></div>
+
+    <section class="stage">
+      <div class="envelope" id="envelope" aria-label="Open anniversary envelope">
+        <div class="back"></div>
+        <div class="inner-mouth"></div>
+        <article class="letter" id="letter">
+          <div class="letter-content">
+            <h2 id="yearTitle">2016</h2>
+            <div class="location" id="locationText">Cambodia</div>
+            <p class="message" id="messageText"></p>
+          </div>
+        </article>
+        <div class="front"></div>
+        <div class="flap"></div>
+        <div class="seal" id="seal">10</div>
+      </div>
+    </section>
+
+    <div class="tap" id="tapText">Tap the wax seal to open</div>
+
+    <div class="nav">
+      <button id="prevBtn">← Previous</button>
+      <button id="nextBtn">Next →</button>
+    </div>
+
+    
+<section class="interactive-zone" id="interactiveZone"></section>
+<div class="future-overlay" id="futureOverlay" aria-hidden="true">
+  <div class="future-card">
+    <div class="future-seal">2036</div>
+    <h2>To Be Continued…</h2>
+    <p>Chapter Two</p>
+    <p style="opacity:.72;letter-spacing:.08em;text-transform:uppercase;font-size:.82rem">2026 — 2036</p>
+    <button class="demo-btn" id="closeFuture">Close</button>
+  </div>
+</div>
+
+<div class="hint">Tip: replace the sample text and image paths inside the <strong>stories</strong> section of this file.</div>
+  </main>
+
+  <script>
+    const stories = [
+      {
+        year: "We Met",
+        location: "Cambodia — Where We Met",
+        image: "images/cambodia.jpg",
+        message: "This is where our story began."
+      },
+      {
+        year: "I Do",
+        location: "İzmir — Where We Said “I Do”",
+        image: "images/izmir.jpg",
+        message: "The place where we became family and began our life together."
+      },
+      {
+        year: "Newlyweds",
+        location: "Myanmar — Our First Chapter as Husband & Wife",
+        image: "images/myanmar.jpg",
+        message: "One of our first chapters as husband and wife — building a life together far from where our story began."
+      },
+      {
+        year: "Our Adventure",
+        location: "Laos — Another Home, Another Chapter",
+        image: "images/laos.jpg",
+        message: "Another place we called home, another chapter of memories we built side by side."
+      },
+      {
+        year: "Back Where It Began",
+        location: "Cambodia — Full Circle",
+        image: "images/cambodia-again.jpg",
+        message: "We returned to the place where we first met — this time together as husband and wife."
+      },
+      {
+        year: "Then There Were Three",
+        location: "Year Eight — Our Biggest Little Adventure",
+        image: "images/year-eight.jpg",
+        message: "Eight years into our story, our world got a little bigger — and our hearts did too."
+      },
+      {
+        year: "Our Home",
+        location: "Kansas City — Where Our Story Continues",
+        image: "images/kansascity.jpg",
+        message: "From Cambodia to İzmir, Myanmar, Laos, back to Cambodia, and then Kansas City — our story keeps going."
+      }
+    ];
+
+    let current = 0;
+    let isOpen = false;
+
+    const envelope = document.getElementById("envelope");
+    const yearTitle = document.getElementById("yearTitle");
+    const locationText = document.getElementById("locationText");
+    const messageText = document.getElementById("messageText");
+    const tapText = document.getElementById("tapText");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const yearTabs = document.getElementById("yearTabs");
+
+    function renderTabs(){
+      yearTabs.innerHTML = "";
+      stories.forEach((story, i) => {
+        const b = document.createElement("button");
+        b.className = "year-btn" + (i === current ? " active" : "");
+        b.textContent = story.year;
+        b.addEventListener("click", () => {
+          current = i;
+          closeAndLoad();
+        });
+        yearTabs.appendChild(b);
+      });
+    }
+
+    
+
+const interactiveZone=document.getElementById("interactiveZone");
+function clearInteractive(){if(interactiveZone)interactiveZone.innerHTML=""}
+
+function renderBoardingPasses(){
+  interactiveZone.innerHTML=`<div class="selected-experience"><div class="selected-card"><div class="selected-head"><strong>Our Boarding Passes</strong><span>Six chapters. One journey.</span></div><div class="pass-desk"><div id="passStack" class="pass-stack"></div><div id="passCaption" class="pass-caption">Tap the top boarding pass to continue the journey.</div></div></div></div>`;
+
+  const legs=[
+    {from:"PNH",fromName:"Cambodia",to:"ADB",toName:"İzmir",date:"2016",flight:"OUR 001",gate:"01",seat:"10A",chapter:"WHERE WE MET"},
+    {from:"ADB",fromName:"İzmir",to:"RGN",toName:"Myanmar",date:"2016",flight:"OUR 002",gate:"02",seat:"10B",chapter:"NEWLYWEDS"},
+    {from:"RGN",fromName:"Myanmar",to:"VTE",toName:"Laos",date:"OUR LIFE",flight:"OUR 003",gate:"03",seat:"10C",chapter:"ADVENTURE"},
+    {from:"VTE",fromName:"Laos",to:"PNH",toName:"Cambodia",date:"FULL CIRCLE",flight:"OUR 004",gate:"04",seat:"10D",chapter:"BACK TO THE BEGINNING"},
+    {from:"PNH",fromName:"Cambodia",to:"MCI",toName:"Kansas City",date:"2021–2026",flight:"OUR 005",gate:"05",seat:"10E",chapter:"OUR HOME"},
+    {from:"MCI",fromName:"Kansas City",to:"???",toName:"Unknown",date:"NEXT",flight:"OUR 006",gate:"∞",seat:"US",chapter:"NEXT CHAPTER",next:true}
+  ];
+
+  const st=document.getElementById("passStack");
+
+  legs.slice().reverse().forEach((x,ri)=>{
+    const i=legs.length-1-ri;
+    const d=document.createElement("div");
+    d.className="board-pass"+(x.next?" next-pass":"");
+    d.style.transform=`translateY(${i*5}px) rotate(${(i%2?1:-1)*.45}deg)`;
+    d.innerHTML=`
+      <div class="main">
+        <div class="airline-row">
+          <div class="airline-name">OUR JOURNEY</div>
+          <div class="ticket-class">10TH ANNIVERSARY · BOARDING PASS</div>
+        </div>
+
+        <div class="flight-route">
+          <div>
+            <div class="airport-code">${x.from}</div>
+            <div class="airport-name">${x.fromName}</div>
+          </div>
+          <div class="flight-plane">✈</div>
+          <div class="destination">
+            <div class="airport-code">${x.to}</div>
+            <div class="airport-name">${x.toName}</div>
+          </div>
+        </div>
+
+        <div class="ticket-details">
+          <div><span class="detail-label">Passenger</span><span class="detail-value">US</span></div>
+          <div><span class="detail-label">Flight</span><span class="detail-value">${x.flight}</span></div>
+          <div><span class="detail-label">Gate</span><span class="detail-value">${x.gate}</span></div>
+          <div><span class="detail-label">Seat</span><span class="detail-value">${x.seat}</span></div>
+        </div>
+      </div>
+
+      <div class="stub">
+        <div style="width:100%">
+          <div class="stub-title">${x.chapter}</div>
+          <div class="stub-code">${String(i+1).padStart(2,"0")}</div>
+          <div class="barcode"></div>
+          <div class="stub-small">${x.date}<br>${x.from} → ${x.to}<br>BOARDING: TOGETHER</div>
+        </div>
+      </div>`;
+
+    d.onclick=()=>{
+      if(d!==st.lastElementChild)return;
+      d.classList.add("gone");
+      setTimeout(()=>{
+        d.remove();
+        if(!st.children.length){
+          document.getElementById("passCaption").textContent="No final destination — the journey continues.";
+        }
+      },480);
+    };
+    st.appendChild(d);
+  });
+}
+
+function renderNegativeViewer(){
+  interactiveZone.innerHTML=`<div class="selected-experience"><div class="selected-card"><div class="selected-head"><strong>Photo Negative Viewer</strong><span>Pull the film through the light.</span></div><div class="negative-viewer"><div class="negative-lightbox"><div id="negHero" class="negative-hero"><div id="negTitle" class="negative-title"></div></div></div><div id="negFilm" class="negative-film"></div></div></div></div>`;
+  const data=[["images/cambodia.jpg","Cambodia · We Met"],["images/izmir.jpg","İzmir · I Do"],["images/myanmar.jpg","Myanmar · Newlyweds"],["images/laos.jpg","Laos · Adventure"],["images/cambodia-again.jpg","Cambodia · Full Circle"],["images/kansascity.jpg","Kansas City · Home"]];
+  const film=document.getElementById("negFilm"),hero=document.getElementById("negHero"),title=document.getElementById("negTitle");let idx=0,startX=0,base=0,drag=false;
+  data.forEach((x,i)=>{const q=document.createElement("div");q.className="negative-frame";q.style.backgroundImage=`url('${x[0]}'),linear-gradient(135deg,#777451,#353821)`;q.onclick=()=>select(i);film.appendChild(q)});
+  function select(i){idx=i;[...film.children].forEach((q,j)=>q.classList.toggle("active",j===i));hero.style.backgroundImage=`linear-gradient(#0000,#0002),url('${data[i][0]}'),linear-gradient(135deg,#777451,#353821)`;title.textContent=data[i][1];base=-i*139;film.style.transform=`translateX(${base}px)`}
+  film.onmousedown=e=>{drag=true;startX=e.clientX};window.onmousemove=e=>{if(drag)film.style.transform=`translateX(${base+e.clientX-startX}px)`};window.onmouseup=e=>{if(!drag)return;drag=false;const delta=e.clientX-startX;if(Math.abs(delta)>50)idx=Math.max(0,Math.min(data.length-1,idx+(delta<0?1:-1)));select(idx)};select(0);
+}
+
+function renderLivingPhoto(){
+  interactiveZone.innerHTML=`<div class="selected-experience"><div class="selected-card"><div class="selected-head"><strong>Living Photograph</strong><span>Move left to right and let Kansas City turn from day to night.</span></div><div id="livingScene" class="living-scene"><div id="livingNight" class="living-night"></div><div id="livingSun" class="living-sun"></div><div id="livingMoon" class="living-moon"></div><div id="livingLights" class="living-lights"></div><div class="living-copy">Where we grew roots.</div><div id="livingTime" class="living-time">8:00 AM</div></div></div></div>`;
+  const s=document.getElementById("livingScene"),n=document.getElementById("livingNight"),sun=document.getElementById("livingSun"),moon=document.getElementById("livingMoon"),lights=document.getElementById("livingLights"),time=document.getElementById("livingTime");
+  s.onmousemove=e=>{const r=s.getBoundingClientRect(),p=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width));n.style.opacity=Math.max(0,(p-.42)/.58);sun.style.left=(10+p*65)+"%";sun.style.top=(12+Math.sin(p*Math.PI)*22)+"%";sun.style.opacity=1-p;moon.style.opacity=Math.max(0,(p-.55)/.45);lights.style.opacity=Math.max(0,(p-.68)/.32);const hr=Math.round(8+p*14);time.textContent=(hr>12?hr-12:hr)+":00 "+(hr>=12?"PM":"AM")};
+}
+
+function renderLastPage(){
+  interactiveZone.innerHTML=`<div class="selected-experience"><div class="selected-card"><div class="selected-head"><strong>The Last Page</strong><span>Turn one final page.</span></div><div class="last-stage"><div class="last-book"><div class="last-page last-left"><h3 style="margin-top:0">Our First Decade</h3><div style="opacity:.65;line-height:1.75">Cambodia<br>İzmir<br>Myanmar<br>Laos<br>Cambodia<br>Kansas City</div></div><div id="lastRight" class="last-page last-right"><div id="lastInk" class="last-ink">THE END<br><span style="font-size:.72em;letter-spacing:.08em">TO BE CONTINUED…</span></div><div id="lastFuture" class="last-future">2016–2026 was only Chapter One.<br><br>See you here in 2036.</div><div id="lastSeal" class="last-seal">2036</div><div id="lastTurn" class="last-turn"></div></div></div></div></div></div>`;
+  const r=document.getElementById("lastRight");document.getElementById("lastTurn").onclick=()=>{if(r.classList.contains("open"))return;r.classList.add("open");setTimeout(()=>{document.getElementById("lastInk").classList.add("show");document.getElementById("lastFuture").classList.add("show");document.getElementById("lastSeal").classList.add("show")},950)};
+}
+
+
+function renderFamilyHeart(){
+  interactiveZone.innerHTML=`
+    <div class="selected-experience">
+      <div class="selected-card">
+        <div class="selected-head">
+          <strong>Then There Were Three</strong>
+          <span>One more heartbeat joined our story.</span>
+        </div>
+        <div id="familyHeartScene" class="family-heart-scene">
+          <div class="family-year">Year Eight</div>
+
+          <div class="heartbeat-line">
+            <svg viewBox="0 0 900 80" preserveAspectRatio="none" aria-hidden="true">
+              <path d="M0 42 H250 L278 42 L292 18 L312 67 L330 35 L346 42 H430 L450 42 L463 28 L477 55 L490 42 H900"/>
+            </svg>
+          </div>
+
+          <div class="family-heart-wrap" id="familyHeartTrigger">
+            <div class="heart-ring"></div>
+
+            <svg class="family-heart-svg" viewBox="0 0 100 100" aria-label="Heart">
+              <defs>
+                <linearGradient id="bigHeartGradient" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#c53d4c"/>
+                  <stop offset="55%" stop-color="#9f2232"/>
+                  <stop offset="100%" stop-color="#6f1521"/>
+                </linearGradient>
+              </defs>
+              <path d="M50 88
+                       C45 82, 10 60, 10 35
+                       C10 19, 21 10, 34 10
+                       C43 10, 49 15, 50 23
+                       C51 15, 57 10, 66 10
+                       C79 10, 90 19, 90 35
+                       C90 60, 55 82, 50 88 Z"/>
+            </svg>
+
+            <svg class="small-heart-svg" viewBox="0 0 100 100" aria-label="Little heart">
+              <defs>
+                <linearGradient id="smallHeartGradient" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#ee6672"/>
+                  <stop offset="55%" stop-color="#d33a49"/>
+                  <stop offset="100%" stop-color="#a51f2d"/>
+                </linearGradient>
+              </defs>
+              <path d="M50 88
+                       C45 82, 10 60, 10 35
+                       C10 19, 21 10, 34 10
+                       C43 10, 49 15, 50 23
+                       C51 15, 57 10, 66 10
+                       C79 10, 90 19, 90 35
+                       C90 60, 55 82, 50 88 Z"/>
+            </svg>
+          </div>
+
+          <div class="family-copy">
+            <div class="before">Tap the heartbeat</div>
+            <div class="after">And in our eighth year, two hearts became three.</div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+
+  const scene=document.getElementById("familyHeartScene");
+  document.getElementById("familyHeartTrigger").onclick=()=>{
+    if(scene.classList.contains("revealed"))return;
+    scene.classList.add("revealed");
+  };
+}
+
+
+function renderWeddingReveal(){
+  interactiveZone.innerHTML=`
+    <div class="selected-experience">
+      <div class="selected-card">
+        <div class="selected-head"><strong>I Do</strong><span>Develop our wedding photograph.</span></div>
+        <div id="weddingReveal" class="wedding-reveal">
+          <div class="wedding-paper"><div id="weddingPhoto" class="wedding-photo"></div></div>
+          <div id="weddingLight" class="wedding-light"></div>
+          <div class="wedding-caption">Move the light across the photograph.</div>
+        </div>
+      </div>
+    </div>`;
+  const box=document.getElementById("weddingReveal");
+  const photo=document.getElementById("weddingPhoto");
+  const light=document.getElementById("weddingLight");
+  photo.style.backgroundImage=`url("images/izmir.jpg")`;
+  let reveal=14;
+  function move(e){
+    const r=box.getBoundingClientRect();
+    const x=(e.touches?e.touches[0].clientX:e.clientX)-r.left;
+    const y=(e.touches?e.touches[0].clientY:e.clientY)-r.top;
+    light.style.left=x+"px";light.style.top=y+"px";
+    reveal=Math.min(100,reveal+0.7);
+    photo.style.opacity=reveal/100;
+    photo.style.filter=`sepia(${Math.max(0,.75-reveal/135)}) contrast(${.85+reveal/650}) brightness(${.82+reveal/500})`;
+  }
+  box.addEventListener("mousemove",move);
+  box.addEventListener("touchmove",e=>{e.preventDefault();move(e)},{passive:false});
+}
+
+function renderPassport(){
+  interactiveZone.innerHTML=`
+    <div class="selected-experience">
+      <div class="selected-card">
+        <div class="selected-head"><strong>Newlyweds</strong><span>Open the passport and stamp our Myanmar chapter.</span></div>
+        <div class="passport-stage">
+          <div id="passportBook" class="passport-book">
+            <div class="passport-page">
+              <div class="passport-left">
+                <div id="passportPhoto" class="passport-photo"></div>
+                <div class="passport-meta">Myanmar · Newlyweds<br>Our first chapter as husband & wife abroad</div>
+              </div>
+              <div class="passport-right">
+                <div class="passport-quote">A new country, a new chapter, and a life we were learning to build together.</div>
+                <div class="passport-stamp">MYANMAR<br>OUR CHAPTER</div>
+              </div>
+            </div>
+            <div class="passport-cover">
+              <div class="passport-emblem">✦</div>
+              <div class="passport-hint">Click to open</div>
+            </div>
+            <div class="passport-controls">
+              <button class="demo-btn" id="passportStampBtn">Stamp This Chapter</button>
+              <button class="demo-btn" id="passportCloseBtn">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  const book=document.getElementById("passportBook");
+  document.getElementById("passportPhoto").style.backgroundImage=`url("images/myanmar.jpg")`;
+  book.querySelector(".passport-cover").onclick=()=>book.classList.add("open");
+  document.getElementById("passportStampBtn").onclick=()=>{book.classList.add("open");setTimeout(()=>book.classList.add("stamped"),500)};
+  document.getElementById("passportCloseBtn").onclick=()=>{book.classList.remove("stamped");book.classList.remove("open")};
+}
+
+function renderInteractive(){
+  clearInteractive();
+  const label=stories[current].year;
+  if(label==="We Met"){ renderBoardingPasses(); }
+  if(label==="I Do"){ renderNegativeViewer(); }
+  if(label==="Newlyweds"){ renderPassport(); }
+  if(label==="Our Adventure"){
+    interactiveZone.innerHTML=`
+      <div class="interactive-card">
+        <div class="interactive-title">Our Real Journey</div>
+        <div class="interactive-sub">Watch our story move across the real map.</div>
+        <div id="realJourneyMap" class="real-map-wrap"></div>
+        <div id="mapStatus" class="map-status">Press start.</div>
+        <button class="demo-btn" id="realMapStart">Start Our Journey</button>
+        <button class="demo-btn" id="realMapReset" style="margin-left:8px">Reset</button>
+      </div>`;
+    setTimeout(()=>{
+      const places=[
+        {name:"Cambodia",subtitle:"Where We Met",coords:[11.5564,104.9282],zoom:6},
+        {name:"İzmir",subtitle:"Where We Said “I Do”",coords:[38.4237,27.1428],zoom:7},
+        {name:"Myanmar",subtitle:"Our Newlywed Chapter",coords:[16.8409,96.1735],zoom:6},
+        {name:"Laos",subtitle:"Our Adventure",coords:[17.9757,102.6331],zoom:6},
+        {name:"Cambodia",subtitle:"Back Where It Began",coords:[11.5564,104.9282],zoom:6},
+        {name:"Kansas City",subtitle:"Where Our Story Continues",coords:[39.0997,-94.5786],zoom:6}
+      ];
+      const m=L.map("realJourneyMap",{zoomControl:true,worldCopyJump:true}).setView([25,50],2);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:"&copy; OpenStreetMap contributors"}).addTo(m);
+      const pinIcon=L.divIcon({className:"",html:'<div class="real-map-pin"></div>',iconSize:[24,24],iconAnchor:[12,12],popupAnchor:[0,-12]});
+      let markers=[],segments=[],running=false;const status=document.getElementById("mapStatus"),start=document.getElementById("realMapStart"),reset=document.getElementById("realMapReset"),sleep=ms=>new Promise(r=>setTimeout(r,ms));
+      function clearJourney(){markers.forEach(x=>m.removeLayer(x));segments.forEach(x=>m.removeLayer(x));markers=[];segments=[];status.textContent="Press start.";m.setView([25,50],2)}
+      function addMarker(p){const mk=L.marker(p.coords,{icon:pinIcon}).addTo(m);mk.bindPopup(`<strong>${p.name}</strong><br>${p.subtitle}`);markers.push(mk);mk.openPopup()}
+      async function drawSegment(a,b,duration=1200){const steps=40,pts=[a.coords],line=L.polyline(pts,{weight:4,opacity:.9,dashArray:"8,8"}).addTo(m);segments.push(line);for(let i=1;i<=steps;i++){const t=i/steps,lat=a.coords[0]+(b.coords[0]-a.coords[0])*t;let x1=a.coords[1],x2=b.coords[1];if(Math.abs(x2-x1)>180){if(x2>x1)x1+=360;else x2+=360}let lng=x1+(x2-x1)*t;if(lng>180)lng-=360;if(lng<-180)lng+=360;pts.push([lat,lng]);line.setLatLngs(pts);await sleep(duration/steps)}}
+      async function play(){if(running)return;running=true;start.disabled=true;clearJourney();for(let i=0;i<places.length;i++){const p=places[i];status.textContent=`${p.name} — ${p.subtitle}`;m.flyTo(p.coords,p.zoom,{animate:true,duration:1.5});await sleep(1550);addMarker(p);await sleep(650);if(i<places.length-1){const n=places[i+1];m.flyToBounds(L.latLngBounds([p.coords,n.coords]),{padding:[40,40],maxZoom:4,duration:1.2});await sleep(1250);await drawSegment(p,n,i===4?1800:1100);await sleep(300)}}m.flyToBounds(L.latLngBounds(places.map(p=>p.coords)),{padding:[45,45],maxZoom:2,duration:1.8});status.textContent="5 places. 10 years. One story.";running=false;start.disabled=false}
+      start.onclick=play;reset.onclick=()=>{if(!running)clearJourney()};setTimeout(()=>m.invalidateSize(),250);
+    },120);
+  }
+  if(label==="Back Where It Began"){ renderBoardingPasses(); }
+  if(label==="Then There Were Three"){ renderFamilyHeart(); }
+  if(label==="Our Home"){ renderLivingPhoto(); setTimeout(()=>{const holder=document.createElement("div");holder.innerHTML="";},0); }
+}
+function loadStory(){
+      const s = stories[current];
+      yearTitle.textContent = s.year;
+      locationText.textContent = s.location;
+      messageText.textContent = s.message;
+
+      const letter = document.getElementById("letter");
+      const testImg = new Image();
+      testImg.onload = () => {
+        letter.style.setProperty("--letter-image", `url("${s.image}")`);
+      };
+      testImg.onerror = () => {
+        letter.style.setProperty("--letter-image", "linear-gradient(135deg,#b9aa94,#6d5a4c)");
+      };
+      testImg.src = s.image;
+
+      prevBtn.disabled = current === 0;
+      nextBtn.disabled = current === stories.length - 1;
+      renderTabs();
+      clearInteractive();
+    }
+
+    function openEnvelope(){
+      isOpen = true;
+      envelope.classList.add("open");
+      tapText.textContent = "Your memory is open";
+      setTimeout(renderInteractive, 900);
+    }
+
+    function closeEnvelope(){
+      isOpen = false;
+      envelope.classList.remove("open");
+      tapText.textContent = "Tap the wax seal to open";
+    }
+
+    function closeAndLoad(){
+      closeEnvelope();
+      setTimeout(loadStory, 260);
+    }
+
+    envelope.addEventListener("click", (e) => {
+      if (!isOpen) openEnvelope();
+    });
+
+    prevBtn.addEventListener("click", () => {
+      if(current > 0){
+        current--;
+        closeAndLoad();
+      }
+    });
+
+    nextBtn.addEventListener("click", () => {
+      if(current < stories.length - 1){
+        current++;
+        closeAndLoad();
+      }
+    });
+
+    
+document.getElementById("openLastPage").addEventListener("click",()=>{
+  const oldZone=interactiveZone;
+  const host=document.getElementById("lastPageHost");
+  host.innerHTML=`<div class="selected-card"><div class="selected-head"><strong>The Last Page</strong><span>Turn one final page.</span></div><div class="last-stage"><div class="last-book"><div class="last-page last-left"><h3 style="margin-top:0">Our First Decade</h3><div style="opacity:.65;line-height:1.75">Cambodia<br>İzmir<br>Myanmar<br>Laos<br>Cambodia<br>Kansas City</div></div><div id="lastRightFinal" class="last-page last-right"><div id="lastInkFinal" class="last-ink">THE END<br><span style="font-size:.72em;letter-spacing:.08em">TO BE CONTINUED…</span></div><div id="lastFutureFinal" class="last-future">2016–2026 was only Chapter One.<br><br>See you here in 2036.</div><div id="lastSealFinal" class="last-seal">2036</div><div id="lastTurnFinal" class="last-turn"></div></div></div></div></div>`;
+  document.getElementById("lastTurnFinal").onclick=()=>{
+    const r=document.getElementById("lastRightFinal");if(r.classList.contains("open"))return;r.classList.add("open");
+    setTimeout(()=>{document.getElementById("lastInkFinal").classList.add("show");document.getElementById("lastFutureFinal").classList.add("show");document.getElementById("lastSealFinal").classList.add("show")},950);
+  };
+  host.scrollIntoView({behavior:"smooth",block:"center"});
+});
+
+loadStory();
+  </script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</body>
+</html>
