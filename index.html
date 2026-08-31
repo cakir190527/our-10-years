@@ -664,6 +664,144 @@
   .passport-right{display:none}
 }
 
+
+@media(max-width:650px){
+.pass-desk{height:320px}
+.pass-stack{width:96%;height:170px;top:45%}
+.board-pass{grid-template-columns:minmax(0,1fr) 92px;border-radius:8px}
+.board-pass .main{padding:12px 14px}
+.board-pass .stub{padding:10px 7px}
+.board-pass .route{font-size:1.2rem;margin:7px 0}
+.board-pass .meta{font-size:8px;line-height:1.35}
+.negative-film{touch-action:pan-y}
+.living-scene{touch-action:pan-y}
+}
+
+/* Cambodia Again — Photo Focus */
+.focus-experience{
+  width:min(820px,95vw);margin:16px auto 24px;
+}
+.focus-card{
+  position:relative;overflow:hidden;border-radius:20px;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.06);
+  box-shadow:0 20px 45px rgba(0,0,0,.2);
+}
+.focus-head{
+  padding:15px 18px;text-align:left;
+  border-bottom:1px solid rgba(255,255,255,.1);
+}
+.focus-head strong{font-weight:500;font-size:1.1rem}
+.focus-head span{display:block;opacity:.62;font-size:.84rem;margin-top:3px}
+.focus-photo{
+  height:390px;position:relative;overflow:hidden;
+  background:
+    linear-gradient(rgba(0,0,0,.12),rgba(0,0,0,.42)),
+    url('images/cambodia-again.jpg') center/cover,
+    linear-gradient(135deg,#6b7048,#30351f);
+  cursor:none;
+  touch-action:none;
+}
+.focus-lens{
+  position:absolute;width:180px;height:180px;border-radius:50%;
+  border:1px solid rgba(255,255,255,.7);
+  box-shadow:0 0 0 9999px rgba(0,0,0,.58),0 12px 28px rgba(0,0,0,.35);
+  transform:translate(-50%,-50%);
+  pointer-events:none;
+}
+.focus-lens:after{
+  content:"";position:absolute;inset:0;border-radius:50%;
+  background:url('images/cambodia-again.jpg') center/cover;
+  filter:saturate(1.08) brightness(1.08);
+}
+.focus-memory{
+  position:absolute;padding:8px 12px;border-radius:999px;
+  background:rgba(20,22,13,.86);
+  border:1px solid rgba(255,255,255,.2);
+  font-size:.84rem;opacity:0;transform:translateY(5px);
+  transition:.25s;pointer-events:none;
+}
+.focus-memory.show{opacity:1;transform:none}
+.fm1{left:14%;top:22%}.fm2{right:12%;top:40%}.fm3{left:34%;bottom:18%}
+.focus-caption{
+  position:absolute;left:20px;right:20px;bottom:18px;
+  text-align:center;font-size:1.05rem;text-shadow:0 3px 15px #000;
+}
+@media(max-width:650px){
+  .focus-photo{height:330px;cursor:default}
+  .focus-lens{width:145px;height:145px}
+}
+
+
+/* Passport mobile visibility fix */
+.passport-book{transform-style:preserve-3d}
+.passport-page{
+  z-index:3;
+  opacity:1;
+  visibility:visible;
+  transform:translateZ(0);
+}
+.passport-cover{
+  z-index:6;
+  transition:transform 1s cubic-bezier(.2,.8,.2,1), opacity .3s ease .75s;
+}
+.passport-book.open .passport-cover{
+  transform:rotateY(-168deg);
+  opacity:.08;
+  pointer-events:none;
+}
+.passport-book.open .passport-page{
+  z-index:7;
+}
+@media(max-width:650px){
+  .passport-stage{min-height:420px}
+  .passport-book{width:92vw;height:385px}
+  .passport-page{
+    display:block;
+    background:linear-gradient(180deg,#efe7d0,#d8cdb4);
+  }
+  .passport-left{
+    display:block;
+    height:100%;
+    border-right:none;
+    padding:22px;
+  }
+  .passport-right{display:none}
+  .passport-photo{
+    height:62%;
+    min-height:210px;
+    background-color:#b8aa8e;
+  }
+  .passport-meta{
+    margin-top:14px;
+    font-size:11px;
+    line-height:1.6;
+  }
+  .passport-controls{
+    bottom:12px;
+  }
+}
+
+
+.passport-stamp-mobile{display:none}
+@media(max-width:650px){
+  .passport-left{position:relative}
+  .passport-stamp-mobile{
+    display:grid;
+    right:26px;
+    bottom:94px;
+    width:118px;
+    height:118px;
+    z-index:12;
+    pointer-events:none;
+    opacity:0;
+    transform:rotate(-12deg) scale(.2);
+  }
+  .passport-book.stamped .passport-stamp-mobile{
+    animation:passportStamp .45s cubic-bezier(.15,.9,.2,1.25) forwards;
+  }
+}
+
 </style>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 </head>
@@ -866,13 +1004,22 @@ function renderNegativeViewer(){
   const film=document.getElementById("negFilm"),hero=document.getElementById("negHero"),title=document.getElementById("negTitle");let idx=0,startX=0,base=0,drag=false;
   data.forEach((x,i)=>{const q=document.createElement("div");q.className="negative-frame";q.style.backgroundImage=`url('${x[0]}'),linear-gradient(135deg,#777451,#353821)`;q.onclick=()=>select(i);film.appendChild(q)});
   function select(i){idx=i;[...film.children].forEach((q,j)=>q.classList.toggle("active",j===i));hero.style.backgroundImage=`linear-gradient(#0000,#0002),url('${data[i][0]}'),linear-gradient(135deg,#777451,#353821)`;title.textContent=data[i][1];base=-i*139;film.style.transform=`translateX(${base}px)`}
-  film.onmousedown=e=>{drag=true;startX=e.clientX};window.onmousemove=e=>{if(drag)film.style.transform=`translateX(${base+e.clientX-startX}px)`};window.onmouseup=e=>{if(!drag)return;drag=false;const delta=e.clientX-startX;if(Math.abs(delta)>50)idx=Math.max(0,Math.min(data.length-1,idx+(delta<0?1:-1)));select(idx)};select(0);
+  film.onmousedown=e=>{drag=true;startX=e.clientX};
+  window.onmousemove=e=>{if(drag)film.style.transform=`translateX(${base+e.clientX-startX}px)`};
+  window.onmouseup=e=>{if(!drag)return;drag=false;const delta=e.clientX-startX;if(Math.abs(delta)>50)idx=Math.max(0,Math.min(data.length-1,idx+(delta<0?1:-1)));select(idx)};
+  film.addEventListener("touchstart",e=>{drag=true;startX=e.touches[0].clientX},{passive:true});
+  film.addEventListener("touchmove",e=>{if(!drag)return;film.style.transform=`translateX(${base+e.touches[0].clientX-startX}px)`},{passive:true});
+  film.addEventListener("touchend",e=>{if(!drag)return;drag=false;const delta=e.changedTouches[0].clientX-startX;if(Math.abs(delta)>35)idx=Math.max(0,Math.min(data.length-1,idx+(delta<0?1:-1)));select(idx)},{passive:true});
+  select(0);
 }
 
 function renderLivingPhoto(){
   interactiveZone.innerHTML=`<div class="selected-experience"><div class="selected-card"><div class="selected-head"><strong>Living Photograph</strong><span>Move left to right and let Kansas City turn from day to night.</span></div><div id="livingScene" class="living-scene"><div id="livingNight" class="living-night"></div><div id="livingSun" class="living-sun"></div><div id="livingMoon" class="living-moon"></div><div id="livingLights" class="living-lights"></div><div class="living-copy">Where we grew roots.</div><div id="livingTime" class="living-time">8:00 AM</div></div></div></div>`;
   const s=document.getElementById("livingScene"),n=document.getElementById("livingNight"),sun=document.getElementById("livingSun"),moon=document.getElementById("livingMoon"),lights=document.getElementById("livingLights"),time=document.getElementById("livingTime");
-  s.onmousemove=e=>{const r=s.getBoundingClientRect(),p=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width));n.style.opacity=Math.max(0,(p-.42)/.58);sun.style.left=(10+p*65)+"%";sun.style.top=(12+Math.sin(p*Math.PI)*22)+"%";sun.style.opacity=1-p;moon.style.opacity=Math.max(0,(p-.55)/.45);lights.style.opacity=Math.max(0,(p-.68)/.32);const hr=Math.round(8+p*14);time.textContent=(hr>12?hr-12:hr)+":00 "+(hr>=12?"PM":"AM")};
+  function setLivingTime(clientX){const r=s.getBoundingClientRect(),p=Math.max(0,Math.min(1,(clientX-r.left)/r.width));n.style.opacity=Math.max(0,(p-.42)/.58);sun.style.left=(10+p*65)+"%";sun.style.top=(12+Math.sin(p*Math.PI)*22)+"%";sun.style.opacity=1-p;moon.style.opacity=Math.max(0,(p-.55)/.45);lights.style.opacity=Math.max(0,(p-.68)/.32);const hr=Math.round(8+p*14);time.textContent=(hr>12?hr-12:hr)+":00 "+(hr>=12?"PM":"AM")}
+  s.onmousemove=e=>setLivingTime(e.clientX);
+  s.addEventListener("touchstart",e=>setLivingTime(e.touches[0].clientX),{passive:true});
+  s.addEventListener("touchmove",e=>setLivingTime(e.touches[0].clientX),{passive:true});
 }
 
 function renderLastPage(){
@@ -991,7 +1138,7 @@ function renderPassport(){
           <div id="passportBook" class="passport-book">
             <div class="passport-page">
               <div class="passport-left">
-                <div id="passportPhoto" class="passport-photo"></div>
+                <div id="passportPhoto" class="passport-photo"></div><div class="passport-stamp passport-stamp-mobile">MYANMAR<br>OUR CHAPTER</div>
                 <div class="passport-meta">Myanmar · Newlyweds<br>Our first chapter as husband & wife abroad</div>
               </div>
               <div class="passport-right">
@@ -1012,10 +1159,53 @@ function renderPassport(){
       </div>
     </div>`;
   const book=document.getElementById("passportBook");
-  document.getElementById("passportPhoto").style.backgroundImage=`url("images/myanmar.jpg")`;
+  document.getElementById("passportPhoto").style.backgroundImage='linear-gradient(rgba(0,0,0,.05),rgba(0,0,0,.12)), url("images/myanmar.jpg")';
   book.querySelector(".passport-cover").onclick=()=>book.classList.add("open");
   document.getElementById("passportStampBtn").onclick=()=>{book.classList.add("open");setTimeout(()=>book.classList.add("stamped"),500)};
   document.getElementById("passportCloseBtn").onclick=()=>{book.classList.remove("stamped");book.classList.remove("open")};
+}
+
+
+function renderCambodiaFocus(){
+  interactiveZone.innerHTML=`
+    <div class="focus-experience">
+      <div class="focus-card">
+        <div class="focus-head">
+          <strong>Back Where It Began</strong>
+          <span>Explore the photograph and rediscover where the story started.</span>
+        </div>
+        <div id="focusPhoto" class="focus-photo">
+          <div id="focusLens" class="focus-lens"></div>
+          <div class="focus-memory fm1" data-x="14" data-y="22">The place that started everything</div>
+          <div class="focus-memory fm2" data-x="88" data-y="40">This time, husband & wife</div>
+          <div class="focus-memory fm3" data-x="34" data-y="82">Full circle</div>
+          <div class="focus-caption">Move the lens across our return to Cambodia.</div>
+        </div>
+      </div>
+    </div>`;
+
+  const photo=document.getElementById("focusPhoto");
+  const lens=document.getElementById("focusLens");
+  const memories=[...photo.querySelectorAll(".focus-memory")];
+
+  function move(clientX,clientY){
+    const r=photo.getBoundingClientRect();
+    const x=Math.max(0,Math.min(r.width,clientX-r.left));
+    const y=Math.max(0,Math.min(r.height,clientY-r.top));
+    lens.style.left=x+"px";lens.style.top=y+"px";
+    const xp=x/r.width*100,yp=y/r.height*100;
+    memories.forEach(m=>{
+      const dx=xp-Number(m.dataset.x),dy=yp-Number(m.dataset.y);
+      m.classList.toggle("show",Math.hypot(dx,dy)<20);
+    });
+  }
+
+  photo.addEventListener("mousemove",e=>move(e.clientX,e.clientY));
+  photo.addEventListener("touchstart",e=>{e.preventDefault();move(e.touches[0].clientX,e.touches[0].clientY)},{passive:false});
+  photo.addEventListener("touchmove",e=>{e.preventDefault();move(e.touches[0].clientX,e.touches[0].clientY)},{passive:false});
+
+  const r=photo.getBoundingClientRect();
+  move(r.left+r.width*.5,r.top+r.height*.48);
 }
 
 function renderInteractive(){
@@ -1054,7 +1244,7 @@ function renderInteractive(){
       start.onclick=play;reset.onclick=()=>{if(!running)clearJourney()};setTimeout(()=>m.invalidateSize(),250);
     },120);
   }
-  if(label==="Back Where It Began"){ renderBoardingPasses(); }
+  if(label==="Back Where It Began"){ renderCambodiaFocus(); }
   if(label==="Then There Were Three"){ renderFamilyHeart(); }
   if(label==="Our Home"){ renderLivingPhoto(); setTimeout(()=>{const holder=document.createElement("div");holder.innerHTML="";},0); }
 }
