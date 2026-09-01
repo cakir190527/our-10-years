@@ -199,17 +199,23 @@
       text-align:left;
     }
 
-    .letter::before{
+    .letter-photo{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      object-position:center;
+      display:block;
+      z-index:0;
+    }
+    .letter::after{
       content:"";
       position:absolute;
       inset:0;
-      background:
-        linear-gradient(180deg,rgba(0,0,0,.10) 0%,rgba(0,0,0,.28) 48%,rgba(0,0,0,.72) 100%),
-        var(--letter-image, linear-gradient(135deg,#b9aa94,#6d5a4c));
-      background-size:cover;
-      background-position:center;
-      z-index:0;
-      transition:background-image .25s ease;
+      background:linear-gradient(180deg,rgba(0,0,0,.10) 0%,rgba(0,0,0,.28) 48%,rgba(0,0,0,.72) 100%);
+      z-index:1;
+      pointer-events:none;
     }
 
     .letter-content{
@@ -677,61 +683,27 @@
 .living-scene{touch-action:pan-y}
 }
 
-/* Cambodia Again — Photo Focus */
-.focus-experience{
-  width:min(820px,95vw);margin:16px auto 24px;
-}
-.focus-card{
-  position:relative;overflow:hidden;border-radius:20px;
-  border:1px solid rgba(255,255,255,.14);
-  background:rgba(255,255,255,.06);
-  box-shadow:0 20px 45px rgba(0,0,0,.2);
-}
-.focus-head{
-  padding:15px 18px;text-align:left;
-  border-bottom:1px solid rgba(255,255,255,.1);
-}
-.focus-head strong{font-weight:500;font-size:1.1rem}
-.focus-head span{display:block;opacity:.62;font-size:.84rem;margin-top:3px}
-.focus-photo{
-  height:390px;position:relative;overflow:hidden;
-  background:
-    linear-gradient(rgba(0,0,0,.12),rgba(0,0,0,.42)),
-    url('images/cambodia-again.jpg') center/cover,
-    linear-gradient(135deg,#6b7048,#30351f);
-  cursor:none;
-  touch-action:none;
-}
-.focus-lens{
-  position:absolute;width:180px;height:180px;border-radius:50%;
-  border:1px solid rgba(255,255,255,.7);
-  box-shadow:0 0 0 9999px rgba(0,0,0,.58),0 12px 28px rgba(0,0,0,.35);
-  transform:translate(-50%,-50%);
-  pointer-events:none;
-}
-.focus-lens:after{
-  content:"";position:absolute;inset:0;border-radius:50%;
-  background:url('images/cambodia-again.jpg') center/cover;
-  filter:saturate(1.08) brightness(1.08);
-}
-.focus-memory{
-  position:absolute;padding:8px 12px;border-radius:999px;
-  background:rgba(20,22,13,.86);
-  border:1px solid rgba(255,255,255,.2);
-  font-size:.84rem;opacity:0;transform:translateY(5px);
-  transition:.25s;pointer-events:none;
-}
-.focus-memory.show{opacity:1;transform:none}
-.fm1{left:14%;top:22%}.fm2{right:12%;top:40%}.fm3{left:34%;bottom:18%}
-.focus-caption{
-  position:absolute;left:20px;right:20px;bottom:18px;
-  text-align:center;font-size:1.05rem;text-shadow:0 3px 15px #000;
-}
-@media(max-width:650px){
-  .focus-photo{height:330px;cursor:default}
-  .focus-lens{width:145px;height:145px}
-}
-
+/* Cambodia Again — Memory Portal */
+.fullcircle-experience{width:min(900px,95vw);margin:16px auto 24px}
+.fullcircle-card{position:relative;border-radius:22px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);box-shadow:0 20px 45px rgba(0,0,0,.22);overflow:hidden}
+.fullcircle-head{padding:15px 18px;text-align:left;border-bottom:1px solid rgba(255,255,255,.1)}
+.fullcircle-head strong{font-weight:500;font-size:1.1rem}.fullcircle-head span{display:block;opacity:.62;font-size:.84rem;margin-top:3px}
+.portal-stage{position:relative;min-height:440px;overflow:hidden;cursor:pointer;background:#11150e;isolation:isolate}
+.portal-return{position:absolute;inset:0;background:linear-gradient(rgba(13,17,11,.06),rgba(13,17,11,.28)),url('images/foto-lens.jpg') center/cover no-repeat;transform:scale(1.09);transition:transform 2.3s cubic-bezier(.18,.72,.16,1)}
+.portal-half{position:absolute;top:0;bottom:0;width:50%;overflow:hidden;z-index:4;transition:transform 1.4s cubic-bezier(.15,.82,.18,1)}
+.portal-half.left{left:0}.portal-half.right{right:0}
+.portal-half::before{content:"";position:absolute;top:0;bottom:0;width:200%;background:linear-gradient(rgba(13,17,11,.12),rgba(13,17,11,.42)),url('images/cambodia-again.jpg') center/cover no-repeat;filter:saturate(.78) contrast(1.03)}
+.portal-half.left::before{left:0}.portal-half.right::before{right:0}
+.portal-stage.open .portal-half.left{transform:translateX(-103%)}.portal-stage.open .portal-half.right{transform:translateX(103%)}.portal-stage.open .portal-return{transform:scale(1)}
+.portal-line{position:absolute;left:50%;top:7%;bottom:7%;width:1px;z-index:7;background:linear-gradient(transparent,#efe5bd 22%,#fff 50%,#efe5bd 78%,transparent);box-shadow:0 0 18px rgba(255,239,174,.9);transition:opacity .45s ease .2s}.portal-stage.open .portal-line{opacity:0}
+.portal-ring{position:absolute;left:50%;top:50%;width:min(44vw,250px);aspect-ratio:1;border-radius:50%;z-index:8;opacity:0;transform:translate(-50%,-50%) scale(.12);border:1px solid rgba(255,246,211,.9);box-shadow:0 0 0 7px rgba(255,246,211,.07),0 0 55px rgba(255,232,156,.32),inset 0 0 30px rgba(255,232,156,.18);transition:transform 1.05s cubic-bezier(.18,.9,.22,1) .38s,opacity .3s ease .38s}
+.portal-stage.open .portal-ring{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.portal-ring::before,.portal-ring::after{content:"";position:absolute;inset:12%;border-radius:50%;border:1px dashed rgba(255,246,211,.7);animation:portalSpin 14s linear infinite}.portal-ring::after{inset:22%;border-style:solid;border-color:rgba(255,246,211,.35);animation-direction:reverse;animation-duration:9s}@keyframes portalSpin{to{transform:rotate(360deg)}}
+.portal-years{position:absolute;inset:0;display:grid;place-items:center;z-index:9;color:#fff;text-align:center;text-shadow:0 3px 18px #000;opacity:0;transform:translateY(10px);transition:opacity .6s ease 1.05s,transform .6s ease 1.05s;pointer-events:none}.portal-stage.open .portal-years{opacity:1;transform:none}
+.portal-years .tiny{font:700 10px Arial,sans-serif;letter-spacing:.28em;text-transform:uppercase;opacity:.82}.portal-years .big{font:500 clamp(1.55rem,4.7vw,3rem) Georgia,serif;margin:8px 0 6px}.portal-years .sub{font-size:clamp(.78rem,2vw,.95rem);opacity:.88}
+.portal-hint{position:absolute;left:0;right:0;bottom:18px;z-index:10;text-align:center;color:#fff;font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;text-shadow:0 2px 8px #000;transition:opacity .4s ease}.portal-stage.open .portal-hint{opacity:.4}
+.portal-corner{position:absolute;z-index:6;top:18px;color:#fff;font:700 10px Arial,sans-serif;letter-spacing:.2em;text-transform:uppercase;opacity:.72}.portal-corner.then{left:20px}.portal-corner.now{right:20px;opacity:0;transition:opacity .6s ease 1s}.portal-stage.open .portal-corner.now{opacity:.82}
+@media(max-width:650px){.portal-stage{min-height:370px}.portal-ring{width:190px}.portal-hint{bottom:13px;font-size:.66rem}.portal-years .big{font-size:1.8rem}}
 
 /* Passport mobile visibility fix */
 .passport-book{transform-style:preserve-3d}
@@ -818,6 +790,7 @@
         <div class="back"></div>
         <div class="inner-mouth"></div>
         <article class="letter" id="letter">
+          <img class="letter-photo" id="letterImage" src="images/cambodia.jpg" alt="" decoding="sync" fetchpriority="high">
           <div class="letter-content">
             <h2 id="yearTitle">2016</h2>
             <div class="location" id="locationText">Cambodia</div>
@@ -849,7 +822,7 @@
   </div>
 </div>
 
-<div class="hint">Tip: replace the sample text and image paths inside the <strong>stories</strong> section of this file.</div>
+
   </main>
 
   <script>
@@ -917,8 +890,7 @@
         b.className = "year-btn" + (i === current ? " active" : "");
         b.textContent = story.year;
         b.addEventListener("click", () => {
-          current = i;
-          closeAndLoad();
+          if(i !== current) navigateTo(i);
         });
         yearTabs.appendChild(b);
       });
@@ -1000,7 +972,7 @@ function renderBoardingPasses(){
 
 function renderNegativeViewer(){
   interactiveZone.innerHTML=`<div class="selected-experience"><div class="selected-card"><div class="selected-head"><strong>Photo Negative Viewer</strong><span>Pull the film through the light.</span></div><div class="negative-viewer"><div class="negative-lightbox"><div id="negHero" class="negative-hero"><div id="negTitle" class="negative-title"></div></div></div><div id="negFilm" class="negative-film"></div></div></div></div>`;
-  const data=[["images/cambodia.jpg","Cambodia · We Met"],["images/izmir.jpg","İzmir · I Do"],["images/myanmar.jpg","Myanmar · Newlyweds"],["images/laos.jpg","Laos · Adventure"],["images/cambodia-again.jpg","Cambodia · Full Circle"],["images/kansascity.jpg","Kansas City · Home"]];
+  const data=[["images/cinefoto1.jpg","İzmir · I Do"],["images/cinefoto2.jpg","İzmir · I Do"],["images/cinefoto3.jpg","İzmir · I Do"],["images/cinefoto4.jpg","İzmir · I Do"],["images/cinefoto5.jpg","İzmir · I Do"],["images/cinefoto6.jpg","İzmir · I Do"]];
   const film=document.getElementById("negFilm"),hero=document.getElementById("negHero"),title=document.getElementById("negTitle");let idx=0,startX=0,base=0,drag=false;
   data.forEach((x,i)=>{const q=document.createElement("div");q.className="negative-frame";q.style.backgroundImage=`url('${x[0]}'),linear-gradient(135deg,#777451,#353821)`;q.onclick=()=>select(i);film.appendChild(q)});
   function select(i){idx=i;[...film.children].forEach((q,j)=>q.classList.toggle("active",j===i));hero.style.backgroundImage=`linear-gradient(#0000,#0002),url('${data[i][0]}'),linear-gradient(135deg,#777451,#353821)`;title.textContent=data[i][1];base=-i*139;film.style.transform=`translateX(${base}px)`}
@@ -1166,46 +1138,29 @@ function renderPassport(){
 }
 
 
-function renderCambodiaFocus(){
+function renderCambodiaFullCircle(){
   interactiveZone.innerHTML=`
-    <div class="focus-experience">
-      <div class="focus-card">
-        <div class="focus-head">
+    <div class="fullcircle-experience">
+      <div class="fullcircle-card">
+        <div class="fullcircle-head">
           <strong>Back Where It Began</strong>
-          <span>Explore the photograph and rediscover where the story started.</span>
+          <span>The same country. A different version of us.</span>
         </div>
-        <div id="focusPhoto" class="focus-photo">
-          <div id="focusLens" class="focus-lens"></div>
-          <div class="focus-memory fm1" data-x="14" data-y="22">The place that started everything</div>
-          <div class="focus-memory fm2" data-x="88" data-y="40">This time, husband & wife</div>
-          <div class="focus-memory fm3" data-x="34" data-y="82">Full circle</div>
-          <div class="focus-caption">Move the lens across our return to Cambodia.</div>
+        <div id="portalStage" class="portal-stage" role="button" aria-label="Open our Cambodia memory portal">
+          <div class="portal-return"></div>
+          <div class="portal-half left"></div>
+          <div class="portal-half right"></div>
+          <div class="portal-line"></div>
+          <div class="portal-corner then">Cambodia · Then</div>
+          <div class="portal-corner now">Cambodia · Again</div>
+          <div class="portal-ring"></div>
+          <div class="portal-years"><div><div class="tiny">Full circle</div><div class="big">We came back different.</div><div class="sub">This time, husband & wife.</div></div></div>
+          <div id="portalHint" class="portal-hint">Tap to return to where it began</div>
         </div>
       </div>
     </div>`;
-
-  const photo=document.getElementById("focusPhoto");
-  const lens=document.getElementById("focusLens");
-  const memories=[...photo.querySelectorAll(".focus-memory")];
-
-  function move(clientX,clientY){
-    const r=photo.getBoundingClientRect();
-    const x=Math.max(0,Math.min(r.width,clientX-r.left));
-    const y=Math.max(0,Math.min(r.height,clientY-r.top));
-    lens.style.left=x+"px";lens.style.top=y+"px";
-    const xp=x/r.width*100,yp=y/r.height*100;
-    memories.forEach(m=>{
-      const dx=xp-Number(m.dataset.x),dy=yp-Number(m.dataset.y);
-      m.classList.toggle("show",Math.hypot(dx,dy)<20);
-    });
-  }
-
-  photo.addEventListener("mousemove",e=>move(e.clientX,e.clientY));
-  photo.addEventListener("touchstart",e=>{e.preventDefault();move(e.touches[0].clientX,e.touches[0].clientY)},{passive:false});
-  photo.addEventListener("touchmove",e=>{e.preventDefault();move(e.touches[0].clientX,e.touches[0].clientY)},{passive:false});
-
-  const r=photo.getBoundingClientRect();
-  move(r.left+r.width*.5,r.top+r.height*.48);
+  const stage=document.getElementById("portalStage"),hint=document.getElementById("portalHint");
+  stage.addEventListener("click",()=>{const open=stage.classList.toggle("open");hint.textContent=open?"Tap to close the memory":"Tap to return to where it began";});
 }
 
 function renderInteractive(){
@@ -1244,7 +1199,7 @@ function renderInteractive(){
       start.onclick=play;reset.onclick=()=>{if(!running)clearJourney()};setTimeout(()=>m.invalidateSize(),250);
     },120);
   }
-  if(label==="Back Where It Began"){ renderCambodiaFocus(); }
+  if(label==="Back Where It Began"){ renderCambodiaFullCircle(); }
   if(label==="Then There Were Three"){ renderFamilyHeart(); }
   if(label==="Our Home"){ renderLivingPhoto(); setTimeout(()=>{const holder=document.createElement("div");holder.innerHTML="";},0); }
 }
@@ -1254,15 +1209,13 @@ function loadStory(){
       locationText.textContent = s.location;
       messageText.textContent = s.message;
 
-      const letter = document.getElementById("letter");
-      const testImg = new Image();
-      testImg.onload = () => {
-        letter.style.setProperty("--letter-image", `url("${s.image}")`);
-      };
-      testImg.onerror = () => {
-        letter.style.setProperty("--letter-image", "linear-gradient(135deg,#b9aa94,#6d5a4c)");
-      };
-      testImg.src = s.image;
+      const letterImage = document.getElementById("letterImage");
+      if (letterImage) {
+        letterImage.src = s.image;
+        letterImage.alt = s.location;
+        letterImage.loading = "eager";
+        if (letterImage.decode) letterImage.decode().catch(()=>{});
+      }
 
       prevBtn.disabled = current === 0;
       nextBtn.disabled = current === stories.length - 1;
@@ -1283,9 +1236,19 @@ function loadStory(){
       tapText.textContent = "Tap the wax seal to open";
     }
 
-    function closeAndLoad(){
+    let navTimer = null;
+    function navigateTo(nextIndex){
+      if(nextIndex < 0 || nextIndex >= stories.length || nextIndex === current) return;
+      clearTimeout(navTimer);
+      const wasOpen = isOpen;
       closeEnvelope();
-      setTimeout(loadStory, 260);
+      clearInteractive();
+      // Keep the CURRENT memory in the envelope for the entire closing motion.
+      // Only after it is fully closed do we swap text/photo to the next chapter.
+      navTimer = setTimeout(() => {
+        current = nextIndex;
+        loadStory();
+      }, wasOpen ? 820 : 40);
     }
 
     envelope.addEventListener("click", (e) => {
@@ -1293,17 +1256,11 @@ function loadStory(){
     });
 
     prevBtn.addEventListener("click", () => {
-      if(current > 0){
-        current--;
-        closeAndLoad();
-      }
+      if(current > 0) navigateTo(current - 1);
     });
 
     nextBtn.addEventListener("click", () => {
-      if(current < stories.length - 1){
-        current++;
-        closeAndLoad();
-      }
+      if(current < stories.length - 1) navigateTo(current + 1);
     });
 
     
@@ -1318,6 +1275,11 @@ document.getElementById("openLastPage").addEventListener("click",()=>{
   host.scrollIntoView({behavior:"smooth",block:"center"});
 });
 
+// Preload every envelope photo from the start. This removes first-open blanks and
+// keeps chapter changes smooth on phones with slower image decoding.
+const storyPreloads = stories.map(story => { const img = new Image(); img.src = story.image; img.decoding = "async"; return img; });
+const firstImg = document.getElementById("letterImage");
+if (firstImg) { firstImg.src = stories[0].image; firstImg.loading = "eager"; }
 loadStory();
   </script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
