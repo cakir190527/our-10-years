@@ -1,0 +1,14 @@
+NEW FINAL-FLOW IMAGE FILES
+
+images/hidden-surprise-photo.jpg  -> Hidden Surprise photo. Replace this file with any photo you want, KEEP THE SAME NAME.
+images/then-2016.jpg              -> Left / THEN image for Then <-> Now. Replace with your 2016 photo, KEEP THE SAME NAME.
+images/now-2026.jpg               -> Right / NOW image for Then <-> Now. Replace with your current/2026 photo, KEEP THE SAME NAME.
+
+Existing first Cambodia ghost-memory overlay:
+images/cambodia-memory.jpg        -> The transparent memory image in the sky. Its opacity was increased slightly in this demo.
+
+You can replace any of these images later without editing HTML as long as the filename and extension stay exactly the same.
+
+NEW UNIQUE IMAGE NAMES:
+intro-background.jpg = opening intro full-screen background
+cambodia-ghost.jpg = transparent ghost/memory image inside first Cambodia photo

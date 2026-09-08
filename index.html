@@ -1049,10 +1049,17 @@ body::before{mix-blend-mode:screen;opacity:.45 !important;}
 
 @media(max-width:700px){.final-flow-stack{margin-top:20px;gap:18px}.final-flow-head{align-items:start;flex-direction:column}.final-flow-head span{text-align:left}.hidden-memory,.then-now-wrap{margin:12px}.then-now-wrap{padding:0}.hidden-memory{aspect-ratio:4/3}.then-now-frame{aspect-ratio:4/3}.secret-heart{right:12px;bottom:12px}.final-letter-inner{padding:28px 24px}.final-flow-card{border-radius:18px}.final-flow-card.letter-open .final-letter-paper{max-height:68vh;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}}
 
+
+/* Persistent anniversary music control */
+.music-toggle{position:fixed;right:18px;bottom:18px;z-index:10050;border:1px solid rgba(255,255,255,.32);background:rgba(29,39,25,.78);color:#f4efdf;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 8px 26px rgba(0,0,0,.28);border-radius:999px;padding:10px 14px;font:600 12px/1.1 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:.02em;cursor:pointer;transition:transform .2s ease,background .2s ease,opacity .2s ease}.music-toggle:hover{transform:translateY(-1px);background:rgba(36,48,31,.9)}.music-toggle:active{transform:translateY(0) scale(.98)}.music-toggle .music-icon{display:inline-block;width:16px;text-align:center;margin-right:5px}.music-toggle.is-playing .music-icon{animation:musicPulse 1.35s ease-in-out infinite}@keyframes musicPulse{0%,100%{transform:scale(1);opacity:.75}50%{transform:scale(1.15);opacity:1}}@media(max-width:700px){.music-toggle{right:12px;bottom:12px;padding:9px 12px;font-size:11px}}
+
 </style>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 </head>
 <body>
+<audio id="anniversaryMusic" src="music/our-song.mp3" preload="auto" loop playsinline></audio>
+<button class="music-toggle" id="musicToggle" type="button" aria-label="Play or pause music"><span class="music-icon">♪</span><span class="music-label">Play music</span></button>
+
   
 <div class="story-intro" id="storyIntro" aria-label="Story intro">
   <div class="story-intro-inner">
@@ -1720,5 +1727,54 @@ initDust();
 loadStory();
   </script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+(function(){
+  const audio=document.getElementById('anniversaryMusic');
+  const btn=document.getElementById('musicToggle');
+  if(!audio||!btn)return;
+  const label=btn.querySelector('.music-label');
+  let firstGestureHandled=false;
+
+  function sync(){
+    const playing=!audio.paused && !audio.ended;
+    btn.classList.toggle('is-playing',playing);
+    if(label) label.textContent=playing?'Pause music':'Play music';
+    btn.setAttribute('aria-label',playing?'Pause music':'Play music');
+  }
+
+  async function playMusic(){
+    try{ await audio.play(); sync(); return true; }
+    catch(e){ sync(); return false; }
+  }
+
+  btn.addEventListener('click',async function(e){
+    e.stopPropagation();
+    firstGestureHandled=true;
+    if(audio.paused) await playMusic(); else { audio.pause(); sync(); }
+  });
+
+  // Browsers block true autoplay. Start on the visitor's first tap/click/key press,
+  // which normally happens on the intro, then keep the same audio playing across chapters.
+  async function startOnFirstGesture(e){
+    if(firstGestureHandled)return;
+    if(e && e.target && e.target.closest && e.target.closest('#musicToggle'))return;
+    firstGestureHandled=true;
+    await playMusic();
+    removeGestureListeners();
+  }
+  function removeGestureListeners(){
+    document.removeEventListener('pointerup',startOnFirstGesture,true);
+    document.removeEventListener('keydown',startOnFirstGesture,true);
+  }
+  document.addEventListener('pointerup',startOnFirstGesture,true);
+  document.addEventListener('keydown',startOnFirstGesture,true);
+  audio.addEventListener('play',sync);
+  audio.addEventListener('pause',sync);
+  audio.addEventListener('ended',sync);
+  sync();
+})();
+</script>
+
 </body>
 </html>
